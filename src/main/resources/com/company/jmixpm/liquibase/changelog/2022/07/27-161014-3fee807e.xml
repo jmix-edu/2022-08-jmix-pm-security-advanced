@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.11.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="jmix-pm">
+        <createTable tableName="DOCUMENT">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_DOCUMENT"/>
+            </column>
+            <column name="PROJECT_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FILE_" type="VARCHAR(255)"/>
+            <column name="NOTES" type="CLOB"/>
+            <column name="CREATED_BY" type="VARCHAR(255)"/>
+            <column name="CREATED_DATE" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="2" author="jmix-pm">
+        <createTable tableName="NOTIFICATION">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_NOTIFICATION"/>
+            </column>
+            <column name="TITLE" type="VARCHAR(255)"/>
+            <column name="TEXT" type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SENDER_ID" type="UUID"/>
+            <column name="RECIPIENT_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IS_READ" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="3" author="jmix-pm">
+        <createTable tableName="PROJECT">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PROJECT"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="START_DATE" type="DATE"/>
+            <column name="END_DATE" type="DATE"/>
+            <column name="MANAGER_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ARCHIVED" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="4" author="jmix-pm">
+        <createTable tableName="TASK_">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TASK_"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ASSIGNEE_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="START_DATE" type="DATETIME"/>
+            <column name="ESTIMATED_EFFORTS" type="INT"/>
+            <column name="PROJECT_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="5" author="jmix-pm">
+        <createTable tableName="TIME_ENTRY">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TIME_ENTRY"/>
+            </column>
+            <column name="TASK_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TIME_SPENT" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ASSIGNEE_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="CLOB"/>
+            <column name="ENTRY_DATE" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="6" author="jmix-pm">
+        <addColumn tableName="USER_">
+            <column name="ACTIVATION_TOKEN" type="VARCHAR(255)"/>
+            <column name="ADDRESS" type="VARCHAR(255)"/>
+            <column name="CREATED_BY" type="VARCHAR(255)"/>
+            <column name="CREATED_DATE" type="DATETIME"/>
+            <column name="NEEDS_ACTIVATION" type="BOOLEAN"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="7" author="jmix-pm">
+        <createIndex indexName="IDX_NOTIFICATION_RECIPIENT_ID" tableName="NOTIFICATION">
+            <column name="RECIPIENT_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="RECIPIENT_ID" baseTableName="NOTIFICATION"
+                                 constraintName="FK_NOTIFICATION_ON_RECIPIENT" referencedColumnNames="ID"
+                                 referencedTableName="USER_"/>
+    </changeSet>
+    <changeSet id="8" author="jmix-pm">
+        <createIndex indexName="IDX_NOTIFICATION_SENDER_ID" tableName="NOTIFICATION">
+            <column name="SENDER_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="SENDER_ID" baseTableName="NOTIFICATION"
+                                 constraintName="FK_NOTIFICATION_ON_SENDER" referencedColumnNames="ID"
+                                 referencedTableName="USER_"/>
+    </changeSet>
+    <changeSet id="9" author="jmix-pm">
+        <createIndex indexName="IDX_TIMEENTRY_ASSIGNEE_ID" tableName="TIME_ENTRY">
+            <column name="ASSIGNEE_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="ASSIGNEE_ID" baseTableName="TIME_ENTRY"
+                                 constraintName="FK_TIME_ENTRY_ON_ASSIGNEE" referencedColumnNames="ID"
+                                 referencedTableName="USER_"/>
+    </changeSet>
+    <changeSet id="10" author="jmix-pm">
+        <createIndex indexName="IDX_TIMEENTRY_TASK_ID" tableName="TIME_ENTRY">
+            <column name="TASK_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="TASK_ID" baseTableName="TIME_ENTRY"
+                                 constraintName="FK_TIME_ENTRY_ON_TASK" referencedColumnNames="ID"
+                                 referencedTableName="TASK_"/>
+    </changeSet>
+    <changeSet id="11" author="jmix-pm">
+        <createIndex indexName="IDX_USER_ACTIVATION_TOKEN" tableName="USER_" unique="true">
+            <column name="ACTIVATION_TOKEN"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="12" author="jmix-pm">
+        <addForeignKeyConstraint baseColumnNames="PROJECT_ID" baseTableName="DOCUMENT"
+                                 constraintName="FK_DOCUMENT_ON_PROJECT" referencedColumnNames="ID"
+                                 referencedTableName="PROJECT"/>
+    </changeSet>
+    <changeSet id="13" author="jmix-pm">
+        <addForeignKeyConstraint baseColumnNames="MANAGER_ID" baseTableName="PROJECT"
+                                 constraintName="FK_PROJECT_ON_MANAGER" referencedColumnNames="ID"
+                                 referencedTableName="USER_"/>
+    </changeSet>
+    <changeSet id="14" author="jmix-pm">
+        <addForeignKeyConstraint baseColumnNames="ASSIGNEE_ID" baseTableName="TASK_"
+                                 constraintName="FK_TASK__ON_ASSIGNEE" referencedColumnNames="ID"
+                                 referencedTableName="USER_"/>
+    </changeSet>
+    <changeSet id="15" author="jmix-pm">
+        <addForeignKeyConstraint baseColumnNames="PROJECT_ID" baseTableName="TASK_" constraintName="FK_TASK__ON_PROJECT"
+                                 referencedColumnNames="ID" referencedTableName="PROJECT"/>
+    </changeSet>
+    <changeSet id="16" author="jmix-pm">
+        <dropColumn columnName="TIME_ZONE_ID" tableName="USER_"/>
+    </changeSet>
+</databaseChangeLog>
