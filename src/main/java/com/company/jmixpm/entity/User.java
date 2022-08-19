@@ -12,6 +12,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -29,6 +30,9 @@ public class User implements JmixUserDetails {
     @Column(name = "ID", nullable = false)
     @JmixGeneratedValue
     private UUID id;
+
+    @Column(name = "EXPIRY_DATE")
+    private LocalDate expiryDate;
 
     @Version
     @Column(name = "VERSION", nullable = false)
@@ -74,6 +78,14 @@ public class User implements JmixUserDetails {
 
     @Transient
     protected Collection<? extends GrantedAuthority> authorities;
+
+    public LocalDate getExpiryDate() {
+        return expiryDate;
+    }
+
+    public void setExpiryDate(LocalDate expiryDate) {
+        this.expiryDate = expiryDate;
+    }
 
     public Date getCreatedDate() {
         return createdDate;
@@ -192,7 +204,8 @@ public class User implements JmixUserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        LocalDate now = LocalDate.now();
+        return expiryDate == null || !now.isAfter(expiryDate);
     }
 
     @Override

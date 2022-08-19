@@ -5,9 +5,11 @@ import com.company.jmixpm.screen.timeentry.quickaddtimeentry.QuickAddTimeEntryDi
 import io.jmix.ui.ScreenBuilders;
 import io.jmix.ui.action.Action;
 import io.jmix.ui.component.GroupTable;
+import io.jmix.ui.navigation.Route;
 import io.jmix.ui.screen.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+@Route("tasks")
 @UiController("Task_.browse")
 @UiDescriptor("task-browse.xml")
 @LookupComponent("tasksTable")

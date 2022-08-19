@@ -5,6 +5,7 @@ import io.jmix.core.TimeSource;
 import io.jmix.ui.component.Calendar;
 import io.jmix.ui.event.UIRefreshEvent;
 import io.jmix.ui.model.CollectionLoader;
+import io.jmix.ui.navigation.Route;
 import io.jmix.ui.screen.Screen;
 import io.jmix.ui.screen.Subscribe;
 import io.jmix.ui.screen.UiController;
@@ -15,6 +16,7 @@ import org.springframework.context.event.EventListener;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@Route(path = "task-calendar", root = true)
 @UiController("PublicTaskCalendar")
 @UiDescriptor("public-task-calendar.xml")
 public class PublicTaskCalendar extends Screen {

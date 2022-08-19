@@ -1,13 +1,20 @@
 package com.company.jmixpm.screen.project;
 
+import com.company.jmixpm.app.NotificationService;
 import com.company.jmixpm.entity.Project;
+import com.company.jmixpm.security.specific.JmixPmProjectArchiveContext;
+import io.jmix.core.AccessManager;
 import io.jmix.core.DataManager;
+import io.jmix.core.LoadContext;
+import io.jmix.core.UnconstrainedDataManager;
 import io.jmix.ui.Notifications;
 import io.jmix.ui.action.Action;
 import io.jmix.ui.component.GroupTable;
 import io.jmix.ui.model.CollectionLoader;
 import io.jmix.ui.screen.*;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 @UiController("Project.browse")
 @UiDescriptor("project-browse.xml")
@@ -22,6 +29,9 @@ public class ProjectBrowse extends StandardLookup<Project> {
     private DataManager dataManager;
     @Autowired
     private Notifications notifications;
+
+    @Autowired
+    private AccessManager accessManager;
 
     @Subscribe
     public void onBeforeShow(BeforeShowEvent event) {
@@ -49,5 +59,12 @@ public class ProjectBrowse extends StandardLookup<Project> {
 
     public void setHideArchived(boolean hideArchived) {
         this.hideArchived = hideArchived;
+    }
+
+    @Install(to = "projectsTable.archive", subject = "enabledRule")
+    private boolean projectsTableArchiveEnabledRule() {
+        JmixPmProjectArchiveContext context = new JmixPmProjectArchiveContext();
+        accessManager.applyRegisteredConstraints(context);
+        return context.isPermitted();
     }
 }

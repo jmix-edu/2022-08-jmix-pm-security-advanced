@@ -35,7 +35,6 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
-    runtimeOnly 'org.hsqldb:hsqldb'
 
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
@@ -48,6 +47,7 @@ dependencies {
     implementation 'io.jmix.email:jmix-email-starter'
     implementation 'io.jmix.email:jmix-email-ui-starter'
     implementation 'io.jmix.quartz:jmix-quartz-starter'
+    implementation 'org.postgresql:postgresql'
 }
 
 test {
