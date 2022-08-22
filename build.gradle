@@ -48,6 +48,9 @@ dependencies {
     implementation 'io.jmix.email:jmix-email-ui-starter'
     implementation 'io.jmix.quartz:jmix-quartz-starter'
     implementation 'org.postgresql:postgresql'
+    implementation 'io.jmix.audit:jmix-audit-ui-starter'
+    implementation 'io.jmix.audit:jmix-audit-starter'
+    implementation 'io.jmix.ldap:jmix-ldap-starter'
 }
 
 test {

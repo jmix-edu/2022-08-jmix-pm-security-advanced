@@ -2,6 +2,8 @@ package com.company.jmixpm;
 
 import com.company.jmixpm.app.RegistrationCleaner;
 import com.google.common.base.Strings;
+import io.jmix.core.security.CompositeUserRepository;
+import io.jmix.core.security.UserRepository;
 import org.quartz.*;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
